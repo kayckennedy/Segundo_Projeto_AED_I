@@ -1,0 +1,3 @@
+;Programador;DBA
+;a;b
+;pintura;e;nada

@@ -1,3 +1,2 @@
-;Programador;DBA
-;a;b
-;pintura;e;nada
+Pintura
+Arquitetura

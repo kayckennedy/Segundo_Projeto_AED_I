@@ -12,7 +12,7 @@ class Administrador : Pessoa {
     }
 
     public void SalvarCadastroNoArquivo() {
-        GravarArquivo gravar_arquivo = new GravarArquivo("_arquivos\\_logins\\logins_admin.txt");
+        GravarArquivo gravar_arquivo = new GravarArquivo("_infos\\_logins\\logins_admin.txt");
 
         string dados_completo = this.nome_completo + ";";
         dados_completo += this.cpf + ";";
@@ -25,7 +25,7 @@ class Administrador : Pessoa {
     }
 
     public bool VerificarSeCadastroExiste() {
-        LerArquivo arquivo_dados = new LerArquivo("_arquivos\\_logins\\logins_admin.txt");
+        LerArquivo arquivo_dados = new LerArquivo("_infos\\_logins\\logins_admin.txt");
 
         string[] dados_cadastrais = arquivo_dados.LerTodasAsLinhas();
 

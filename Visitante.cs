@@ -9,7 +9,7 @@ class Visitante : Pessoa {
     }
 
     public void SalvarCadastroNoArquivo() {
-        GravarArquivo gravar_arquivo = new GravarArquivo("_arquivos\\_logins\\logins_visitante.txt");
+        GravarArquivo gravar_arquivo = new GravarArquivo("_infos\\_logins\\logins_visitante.txt");
 
         string dados_completo = this.nome_completo + ";";
         dados_completo += this.cpf + ";";
@@ -21,19 +21,23 @@ class Visitante : Pessoa {
     }
 
     public bool VerificarSeCadastroExiste() {
-        LerArquivo arquivo_dados = new LerArquivo("_arquivos\\_logins\\logins_visitante.txt");
-
-        string[] dados_cadastrais = arquivo_dados.LerTodasAsLinhas();
-
         bool cadastro_existe = false;
 
-        foreach (string linha in dados_cadastrais) {
-            string[] dados_separados = linha.Split(";");
+        try { // CASO O ARQUIVO ESTEJA VAZIO
+            LerArquivo arquivo_dados = new LerArquivo("_infos\\_logins\\logins_visitante.txt");
 
-            if (this.cpf == dados_separados[1] || this.email == dados_separados[3]) {
-                cadastro_existe = true;
-                break;
+            string[] dados_cadastrais = arquivo_dados.LerTodasAsLinhas();
+
+            foreach (string linha in dados_cadastrais) {
+                string[] dados_separados = linha.Split(";");
+
+                if (this.cpf == dados_separados[1] || this.email == dados_separados[3]) {
+                    cadastro_existe = true;
+                    break;
+                }
             }
+        } catch {
+            // NÃO SEI O QUE BOTAR AQUI
         }
 
         return cadastro_existe;

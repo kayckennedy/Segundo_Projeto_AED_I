@@ -49,7 +49,7 @@ class Login {
         return null;
     }
 
-    public static void FazerCadastroVisitante(bool cadastro_administrador) {
+    public static void FazerCadastro(bool cadastro_administrador) {
         bool refazer_cadastro = false;
         string nome_completo, cpf, email, cargo = "", senha_conferida = "";
         Data data_nascimento;
@@ -59,8 +59,20 @@ class Login {
             Console.WriteLine("*===========================================*");
             Console.Write("Insira o nome completo: ");
             nome_completo = Console.ReadLine();
-            Console.Write("Digite o CPF: ");
-            cpf = Console.ReadLine();
+
+            bool cpf_valido = false;
+            do {
+                Console.Write("Digite o CPF: ");
+                cpf = Console.ReadLine();
+
+                if (Util.VerificadorDeCpf(cpf)) {
+                    cpf_valido = true;
+                }
+                else {
+                    Console.WriteLine("\nCPF inválido...\nTente novamente\n");
+                }
+            } while(!cpf_valido);
+            
             Console.Write("Agora nos informe a data de nascimento no seguinte formato [DD/MM/AAAA]: ");
             data_nascimento = new Data(Console.ReadLine());
             Console.Write("Por favor, digite o e-mail: ");
@@ -119,6 +131,7 @@ class Login {
                 novo_cadastro_administrador.SalvarCadastroNoArquivo();
 
                 Console.WriteLine("\nCadastro realizado com sucesso!");
+                Util.GravarLog("Novo administrador cadastrado: " + nome_completo + ", cargo: "  + cargo);
             }
         } else { // SE FOR CADASTRO DE UM VISITANTE
             Visitante novo_cadastro_visitante = new Visitante(nome_completo, cpf, data_nascimento, email, senha_conferida);
@@ -129,6 +142,7 @@ class Login {
                 novo_cadastro_visitante.SalvarCadastroNoArquivo();
 
                 Console.WriteLine("\nCadastro realizado com sucesso, visitante!");
+                Util.GravarLog("Novo visitante cadastrado: " + nome_completo);
                 Console.WriteLine("Já pode fazer seu login!");
             }
         }
@@ -201,7 +215,7 @@ class Login {
             recadastrar_visitante.SalvarCadastroNoArquivo();
 
             Console.WriteLine("Troca de senha realizada com sucesso!");
-
+            Util.GravarLog("Senha do usuário " + salvar_nome + " redefinda");
             Util.TecleEnterParaSair();
         } else {
             Util.LimparTela();

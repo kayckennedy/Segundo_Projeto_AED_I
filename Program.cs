@@ -1,20 +1,19 @@
 ﻿using System;
 
-
 class Program {
     static void Main(string[] args) {
         Util.LimparTela();
 
         int escolha_menu_principal;
         do {
-            Util.GravarLog("Programa iniciado", "Desconhecido");
+            Util.GravarLog("Programa iniciado, Usuario: Desconhecido");
 
             Console.WriteLine("*============================================*");
             Console.WriteLine("*= Olá!!");
             Console.WriteLine("*= Escolha UMA dentre as opções disponíveis =*");
             Console.WriteLine("*============================================*");
             Console.WriteLine("*= 1 - Fazer Login");
-            Console.WriteLine("*= 2 - Criar Cadastro");
+            Console.WriteLine("*= 2 - Criar Cadastro de Visitante");
             Console.WriteLine("*= 3 - Recuperar Conta");
             Console.WriteLine("*= 0 - Fechar Programa");
             Console.WriteLine("*============================================*");
@@ -41,10 +40,12 @@ class Program {
                     Login usuario = new Login(email_cadastrado, senha_cadastrada, login_admin);
 
                     if (usuario.VerificarInformacoesParaLogin()) {
-                        Util.GravarLog("Login admin", email_cadastrado);
+
                         string[] informacoes_do_usuario_logado = usuario.PegarInformacoesDepoisDeAutenticado();
                         if (login_admin) {
                             Administrador admin = new Administrador(informacoes_do_usuario_logado[0], informacoes_do_usuario_logado[1], new Data(informacoes_do_usuario_logado[2]), informacoes_do_usuario_logado[3], informacoes_do_usuario_logado[4], informacoes_do_usuario_logado[5]);
+
+                            Util.GravarLog("O usuário " + admin.GetNomeCompleto() + ", acabou de fazer login");
 
                             int escolha_menu_administrador = 0;
                             do {
@@ -54,11 +55,19 @@ class Program {
                                 Console.WriteLine("*===========================================*");
                                 Console.WriteLine("*= 1 - Listar Visitas Marcadas");
                                 Console.WriteLine("*= 2 - Apagar uma Visita Marcada");
-                                Console.WriteLine("*= 3 - Cadastrar Artista");
-                                Console.WriteLine("*= 4 - Apagar um Artista");
-                                Console.WriteLine("*= 5 - Cadastrar Obra");
-                                Console.WriteLine("*= 6 - Apagar uma Obra");
-                                Console.WriteLine("*= 7 - Listar Sugestões");
+                                Console.WriteLine("*= 3 - Apagar TODAS as Visitas");
+                                Console.WriteLine("*= 4 - Cadastrar Artista");
+                                Console.WriteLine("*= 5 - Apagar um Artista");
+                                Console.WriteLine("*= 6 - Apagar TODOS os Artistas");
+                                Console.WriteLine("*= 7 - Cadastrar Obra");
+                                Console.WriteLine("*= 8 - Apagar uma Obra");
+                                Console.WriteLine("*= 9 - Apagar TODAS as Obras");
+                                Console.WriteLine("*= 10 - Listar Sugestões Salvas");
+                                Console.WriteLine("*= 11 - Apagar uma Sugestão");
+                                Console.WriteLine("*= 12 - Apagar todas as sugestões");
+                                Console.WriteLine("*= 13 - Cadastrar novo Admin");
+                                Console.WriteLine("*= 14 - Vizualizar log");
+                                Console.WriteLine("*= 15 - Apagar log");
                                 Console.WriteLine("*= 0 - Voltar à Tela de Login");
                                 Console.WriteLine("*===========================================*");
 
@@ -67,36 +76,67 @@ class Program {
 
                                 switch (escolha_menu_administrador) {
                                     case 1:
-                                        Util.LimparTela();
-
-                                        foreach (string visita_completa in Visitas.LerTodasAsVisitas()) {
-                                            Console.WriteLine(visita_completa);
-                                        }
-
-                                        Util.TecleEnterParaSair();
+                                        Visitas.LerTodasAsVisitas();
+                                        Util.GravarLog("Listar todas as visitas, usuario que realizou: " + admin.GetNomeCompleto());
                                     break;
                                     case 2:
                                         Visitas.ApagarUmaVisita();
                                     break;
                                     case 3:
-                                        Artista.CadastrarArtista();
+                                        Visitas.ApagarTodasAsVisitas();
+                                        Util.GravarLog("Apagar todas as visitas, usuario que realizou: " + admin.GetNomeCompleto());
                                     break;
                                     case 4:
-                                        Artista.ApagarUmArtista();
+                                        Artista.CadastrarArtista();
                                     break;
                                     case 5:
-                                        Obra.CadastrarObra();
+                                        Artista.ApagarUmArtista();
                                     break;
                                     case 6:
-                                        Obra.ApagarUmaObra();
+                                        Artista.ApagarTodosOsArtista();
+                                        Util.GravarLog("Apagar todos os artistas, usuario que realizou: " + admin.GetNomeCompleto());
+
                                     break;
                                     case 7:
+                                        Obra.CadastrarObra();
+                                    break;
+                                    case 8:
+                                        Obra.ApagarUmaObra();
+                                    break;
+                                    case 9:
+                                        Obra.ApagarTodasAsObras();
+                                    break;
+                                    case 10:
                                         Visitas.ListarSugestoes();
+                                       
+                                    break;
+                                    case 11:
+                                        Visitas.ApagarUmaSugestao();
+                                    break;
+                                    case 12:
+                                        Visitas.ApagarTodasAsSugestoes();
+                                        Util.GravarLog("Todas as sugestões foram apagadas, usuario que realizou: " + admin.GetNomeCompleto());
+                                    break;
+                                    case 13:
+                                        Login.FazerCadastro(true);
+                                    break;
+                                    case 14:
+                                        Util.LerLog();
+                                    break;
+                                    case 15:
+                                        Util.LimparLog();
+                                        Util.GravarLog("Log apagado, usuário que realizou: " + admin.GetNomeCompleto());
                                     break;
                                     case 0:
-                                        Util.VoltarParaTelaDeLogin();
+                                        Util.LimparTela();
+                                        Util.GravarLog("O usuário " + admin.GetNomeCompleto() + " fez log out");
+                                        Console.WriteLine("Voltando...");
+
+                                        Util.TecleEnterParaSair();
                                     break;
                                     default:
+                                        Util.LimparTela();
+
                                         Console.WriteLine("Escolha inválida");
                                     break;
                                 }
@@ -134,9 +174,16 @@ class Program {
                                         Obra.ListarObras();
                                     break;
                                     case 0:
-                                        Util.VoltarParaTelaDeLogin();
+                                        Util.LimparTela();
+
+                                        Console.WriteLine("Voltando...");
+                                        Util.GravarLog("O usuário " + visitante.GetNomeCompleto() + " fez log out");
+
+                                        Util.TecleEnterParaSair();
                                     break;
                                     default:
+                                        Util.LimparTela();
+
                                         Console.WriteLine("Escolha inválida");
                                     break;
                                 }
@@ -164,8 +211,8 @@ class Program {
 
                     Console.WriteLine("Saindo...");
                     Console.WriteLine("Volte sempre!!");
-
-                    Util.Pausa(5000);
+                    
+                    Util.TecleEnterParaSair();
                 break;
                 default: // ESCOLHA INVÁLIDA
                     Console.WriteLine("Escolha inválida");

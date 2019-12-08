@@ -38,7 +38,17 @@ class GravarArquivo {
     }
 
     public void ApagarUmaLinha(string texto_procurado) {
-        // Fazer depois
+        LerArquivo todos_os_registros = new LerArquivo(this.arquivo_caminho);
+
+        string[] vetor_registros = todos_os_registros.LerTodasAsLinhas();
+
+        LimparArquivo();
+
+        foreach (string linha in vetor_registros) {
+            if (linha != texto_procurado) {
+                GravarContinuamente(linha);
+            }
+        }
     }
 
 }

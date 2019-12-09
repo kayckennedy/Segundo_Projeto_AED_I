@@ -99,7 +99,7 @@ class Artista {
 
         Console.WriteLine("Artista cadastrado com sucesso!");
         
-        Util.GravarLog("Artista cadastrado: " + nome_completo + " Data de nascimento: " + data_nascimento);
+        Util.GravarLog("Artista cadastrado: " + nome_completo);
 
 
         Util.TecleEnterParaSair();

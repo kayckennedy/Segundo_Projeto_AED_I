@@ -155,6 +155,7 @@ class Program {
                                     Console.WriteLine("*= 2 - Deixar Sugestão");
                                     Console.WriteLine("*= 3 - Listar Artistas");
                                     Console.WriteLine("*= 4 - Listar Obras");
+                                    Console.WriteLine("*= 5 - Ver informações Sobre o Museu");
                                     Console.WriteLine("*= 0 - Voltar à Tela de Login");
                                     Console.WriteLine("*===========================================*");
 
@@ -174,6 +175,11 @@ class Program {
                                         break;
                                         case 4:
                                             Obra.ListarObras();
+                                        break;
+                                        case 5:
+                                            Museu informacoes = new Museu();
+                                            informacoes.InformacoesMuseu();
+                                            Util.GravarLog("Visualização das informações do Museu, usuário " + visitante.GetNomeCompleto());
                                         break;
                                         case 0:
                                             Util.LimparTela();
